@@ -14,16 +14,8 @@ namespace COMMON.Interfaces
         /// </summary>
 
         string Error { get; }
-        /// <summary>
-        /// Obtine el error si es que existe
-        /// </summary>
-        /// <returns></returns>
+
         List<T> ObtenerTodas();
-        /// <summary>
-        /// Obtine el regisro corresponidente
-        /// </summary>
-        /// <param name="id">id del registro a obtener</param>
-        /// <returns>Objeto corresondiente al id proporcionado </returns>
         T ObtenerPorID(int id);
         T ObtenerPorID(string id);
         bool Eliminar(T entidad);

@@ -11,7 +11,7 @@ namespace COMMON.Entidades
         public int id_mensaje { get; set; }
         public int emisor_id { get; set; }
         public int receptor_id { get; set; }
-        public string contenido { get; set; } 
+        public string? contenido { get; set; } 
 
     }
 }

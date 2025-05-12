@@ -1,6 +1,17 @@
-﻿namespace MensajeriaWebAPI.Controllers
+﻿using Microsoft.AspNetCore.Components;
+using COMMON.Entidades;
+using Microsoft.AspNetCore.Mvc;
+
+namespace MensajeriaWebAPI.Controllers
 {
-    public class MensajeController
+    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
+    [ApiController]
+
+    public class MensajeController:GenericController<Mensaje>
     {
+        public MensajeController(): base (Parametros.FabricaRepository.MensajeRepository())
+        {
+            
+        }
     }
 }

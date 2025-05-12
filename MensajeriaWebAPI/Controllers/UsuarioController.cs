@@ -1,6 +1,16 @@
-﻿namespace MensajeriaWebAPI.Controllers
+﻿using COMMON.Entidades;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace MensajeriaWebAPI.Controllers
 {
-    public class UsuarioController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class UsuarioController:GenericController<Usuario>
     {
+        public UsuarioController():base(Parametros.FabricaRepository.UsuarioRepository())
+        {
+            
+        }
     }
 }

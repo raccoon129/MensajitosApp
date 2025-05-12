@@ -12,7 +12,7 @@ namespace COMMON.Validadores
     {
         public CamposControlValidator()
         {
-            
+
         }
     }
 }
