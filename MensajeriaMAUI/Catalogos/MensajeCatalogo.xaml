@@ -2,11 +2,30 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MensajeriaMAUI.Catalogos.MensajeCatalogo"
-             Title="MensajeCatalogo">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Nuevo Mensaje">
+    <Grid RowDefinitions="*, Auto" Padding="15">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Spacing="15" Padding="0,10">
+                <Label Text="Destinatario" FontAttributes="Bold"/>
+                <Label x:Name="DestinatarioLabel" Text="{Binding UsuarioDestino}" 
+                       TextColor="#128C7E" FontSize="16"/>
+
+                <Frame BorderColor="LightGray" Padding="10" CornerRadius="5"
+                       HeightRequest="200" VerticalOptions="Start">
+                    <Editor x:Name="ContenidoEditor" Text="{Binding contenido}" 
+                            Placeholder="Escribe tu mensaje..." 
+                            AutoSize="TextChanges"/>
+                </Frame>
+
+                <Label x:Name="ErrorLabel" TextColor="Red" IsVisible="False"/>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <HorizontalStackLayout Grid.Row="1" HorizontalOptions="Center" Spacing="20" Margin="0,10">
+            <Button x:Name="EnviarButton" Text="Enviar" Clicked="EnviarButton_Clicked"
+                    BackgroundColor="#128C7E" TextColor="White" WidthRequest="120"/>
+            <Button x:Name="CancelarButton" Text="Cancelar" Clicked="CancelarButton_Clicked"
+                    BackgroundColor="#B3B3B3" TextColor="White" WidthRequest="120"/>
+        </HorizontalStackLayout>
+    </Grid>
 </ContentPage>

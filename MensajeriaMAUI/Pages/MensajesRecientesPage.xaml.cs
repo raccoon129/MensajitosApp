@@ -6,4 +6,14 @@ public partial class MensajesRecientesPage : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    private void BuscarMensajeSearchBar_TextChanged(object sender, TextChangedEventArgs e)
+    {
+
+    }
+
+    private void MensajesCollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+
+    }
 }

@@ -63,8 +63,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\BIZ\BIZ.csproj" />
+	  <ProjectReference Include="..\COMMON\COMMON.csproj" />
+	  <ProjectReference Include="..\DAL\DAL.csproj" />
+	  <ProjectReference Include="..\MensajeriaWebAPI\MensajeriaWebAPI.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Compile Update="Pages\AcercaDePage.xaml.cs">
 	    <DependentUpon>AcercaDePage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\ListaUsuariosPage.xaml.cs">
+	    <DependentUpon>ListaUsuariosPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
@@ -76,6 +86,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\AcercaDePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\ListaUsuariosPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\MensajesRecientesPage.xaml">

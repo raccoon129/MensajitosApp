@@ -6,4 +6,14 @@ public partial class UsuarioCatalogo : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    private void GuardarButton_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void CancelarButton_Clicked(object sender, EventArgs e)
+    {
+
+    }
 }

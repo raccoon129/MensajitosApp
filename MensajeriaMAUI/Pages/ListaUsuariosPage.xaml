@@ -1,39 +1,34 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MensajeriaMAUI.Pages.MensajesRecientesPage"
-             Title="Mensajes">
+             x:Class="MensajeriaMAUI.Pages.ListaUsuarios"
+             Title="Contactos">
     <Grid RowDefinitions="Auto, *">
-        <SearchBar Grid.Row="0" x:Name="BuscarMensajeSearchBar" 
-                   Placeholder="Buscar conversación..." 
-                   TextChanged="BuscarMensajeSearchBar_TextChanged"
+        <SearchBar Grid.Row="0" x:Name="BuscarUsuarioSearchBar" 
+                   Placeholder="Buscar contacto..." 
+                   TextChanged="BuscarUsuarioSearchBar_TextChanged"
                    Margin="10,5"/>
 
-        <RefreshView Grid.Row="1" x:Name="RefreshViewMensajes" RefreshColor="#128C7E" 
+        <RefreshView Grid.Row="1" x:Name="RefreshViewUsuarios" RefreshColor="#128C7E" 
                      Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
-            <CollectionView x:Name="MensajesCollectionView" 
-                           ItemsSource="{Binding MensajesRecientes}"
+            <CollectionView x:Name="UsuariosCollectionView" 
+                           ItemsSource="{Binding Usuarios}"
                            SelectionMode="Single"
-                           SelectionChanged="MensajesCollectionView_SelectionChanged">
+                           SelectionChanged="UsuariosCollectionView_SelectionChanged">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid Padding="10">
                             <Frame CornerRadius="10" HasShadow="True" Padding="15" BackgroundColor="White">
-                                <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto, Auto">
-                                    <Ellipse Grid.RowSpan="3" WidthRequest="50" HeightRequest="50" 
+                                <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                                    <Ellipse Grid.RowSpan="2" WidthRequest="50" HeightRequest="50" 
                                              Fill="#128C7E" Margin="0,0,15,0"/>
 
                                     <Label Grid.Column="1" Grid.Row="0" 
-                                           Text="{Binding NombreContacto}" 
+                                           Text="{Binding nombre_usuario}" 
                                            FontAttributes="Bold" FontSize="16"/>
 
                                     <Label Grid.Column="1" Grid.Row="1" 
-                                           Text="{Binding contenido}" 
-                                           LineBreakMode="TailTruncation"
-                                           MaxLines="1" />
-
-                                    <Label Grid.Column="1" Grid.Row="2" 
-                                           Text="{Binding fecha_ejec, StringFormat='{0:dd/MM/yyyy HH:mm}'}" 
+                                           Text="{Binding fecha_ejec, StringFormat='Último acceso: {0:dd/MM/yyyy HH:mm}'}" 
                                            FontSize="12" TextColor="Gray"/>
                                 </Grid>
                             </Frame>
@@ -42,13 +37,19 @@
                 </CollectionView.ItemTemplate>
                 <CollectionView.EmptyView>
                     <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                        <Label Text="No tienes mensajes recientes" 
+                        <Label Text="No hay usuarios disponibles" 
                                FontSize="18" TextColor="Gray" HorizontalOptions="Center"/>
-                        <Label Text="Comienza una conversación desde la lista de usuarios" 
+                        <Label Text="Intenta actualizar la lista" 
                                FontSize="14" TextColor="Gray" HorizontalOptions="Center"/>
                     </VerticalStackLayout>
                 </CollectionView.EmptyView>
             </CollectionView>
         </RefreshView>
+
+        <Button Grid.Row="1" Text="+" FontSize="24" 
+                HeightRequest="56" WidthRequest="56" CornerRadius="28"
+                HorizontalOptions="End" VerticalOptions="End" Margin="20"
+                BackgroundColor="#128C7E" TextColor="White"
+                Clicked="NuevoUsuarioButton_Clicked"/>
     </Grid>
 </ContentPage>
