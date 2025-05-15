@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35913.81 d17.13
+VisualStudioVersion = 17.13.35913.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIZ", "BIZ\BIZ.csproj", "{3B6C35BD-36E9-4D7A-91D7-C21797A70A3C}"
 EndProject
@@ -9,9 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COMMON", "COMMON\COMMON.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{4C59ACE8-3C9A-4BAC-AF19-F51CD3D5D266}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MensajeriaMAUI", "MensajeriaMAUI\MensajeriaMAUI.csproj", "{B0693829-5DF4-4684-A59C-E9223EE5836E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MensajeriaWebAPI", "MensajeriaWebAPI\MensajeriaWebAPI.csproj", "{D78E2D72-5DCC-443C-BF82-DFA6BCF625C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MensajeriaMAUI", "MensajeriaMAUI\MensajeriaMAUI.csproj", "{EC26B181-8890-4A03-BDEB-618B11575DEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,16 +31,16 @@ Global
 		{4C59ACE8-3C9A-4BAC-AF19-F51CD3D5D266}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C59ACE8-3C9A-4BAC-AF19-F51CD3D5D266}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C59ACE8-3C9A-4BAC-AF19-F51CD3D5D266}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B0693829-5DF4-4684-A59C-E9223EE5836E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B0693829-5DF4-4684-A59C-E9223EE5836E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B0693829-5DF4-4684-A59C-E9223EE5836E}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{B0693829-5DF4-4684-A59C-E9223EE5836E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B0693829-5DF4-4684-A59C-E9223EE5836E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B0693829-5DF4-4684-A59C-E9223EE5836E}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{D78E2D72-5DCC-443C-BF82-DFA6BCF625C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D78E2D72-5DCC-443C-BF82-DFA6BCF625C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D78E2D72-5DCC-443C-BF82-DFA6BCF625C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D78E2D72-5DCC-443C-BF82-DFA6BCF625C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC26B181-8890-4A03-BDEB-618B11575DEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC26B181-8890-4A03-BDEB-618B11575DEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC26B181-8890-4A03-BDEB-618B11575DEF}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{EC26B181-8890-4A03-BDEB-618B11575DEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC26B181-8890-4A03-BDEB-618B11575DEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC26B181-8890-4A03-BDEB-618B11575DEF}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

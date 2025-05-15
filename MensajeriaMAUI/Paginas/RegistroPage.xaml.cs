@@ -1,4 +1,4 @@
-namespace MensajeriaMAUI.Pages;
+namespace MensajeriaMAUI.Paginas;
 
 public partial class RegistroPage : ContentPage
 {
