@@ -12,9 +12,14 @@ namespace COMMON.Validadores
     {
         public UsuarioValidator()
         {
-            RuleFor(c => c.id_usuario).NotEmpty();
-            RuleFor(c => c.nombre_usuario).NotEmpty().MinimumLength(3);
-            RuleFor(c => c.contrasena_hash).NotEmpty().MinimumLength(5);
+            RuleFor(u => u.nombre_usuario)
+                .NotEmpty().WithMessage("El nombre de usuario es requerido")
+                .MinimumLength(3).WithMessage("El nombre de usuario debe tener al menos 3 caracteres")
+                .MaximumLength(50).WithMessage("El nombre de usuario no puede exceder 50 caracteres");
+
+            RuleFor(u => u.contrasena_hash)
+                .NotEmpty().WithMessage("La contraseña es requerida")
+                .MinimumLength(6).WithMessage("La contraseña debe tener al menos 6 caracteres");
         }
     }
     

@@ -4,12 +4,25 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MensajeriaMAUI"
+    xmlns:paginas="clr-namespace:MensajeriaMAUI.Paginas"
     Shell.FlyoutBehavior="Disabled"
     Title="MensajeriaMAUI">
+    <TabBar>
+        <Tab Title="Chats"
+             Icon="chat_icon.svg">
+            <ShellContent ContentTemplate="{DataTemplate paginas:MensajesRecientesPage}"
+                          Route="MensajesRecientes" />
+        </Tab>
+        <Tab Title="Usuarios"
+             Icon="persona_icon.svg">
+            <ShellContent ContentTemplate="{DataTemplate paginas:ListaUsuariosPage}"
+                          Route="ListaUsuarios" />
+        </Tab>
+        <Tab Title="Perfil"
+             Icon="libro_iconos.svg">
+            <ShellContent ContentTemplate="{DataTemplate paginas:AcercaDePage}"
+                          Route="AcercaDe" />
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
-
+        </Tab>
+    </TabBar>
 </Shell>

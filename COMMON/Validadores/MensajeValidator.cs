@@ -12,11 +12,15 @@ namespace COMMON.Validadores
     {
         public MensajeValidator()
         {
-            RuleFor(c => c.emisor_id).NotEmpty();
-            RuleFor(c => c.receptor_id).NotEmpty();
-            RuleFor(c => c.receptor_id).NotEmpty();
-            RuleFor(c => c.contenido).NotEmpty().MinimumLength(1);
+            RuleFor(m => m.emisor_id)
+                .NotEqual(0).WithMessage("El ID del emisor es requerido");
 
+            RuleFor(m => m.receptor_id)
+                .NotEqual(0).WithMessage("El ID del receptor es requerido");
+
+            RuleFor(m => m.contenido)
+                .NotEmpty().WithMessage("El contenido del mensaje es requerido")
+                .MaximumLength(1000).WithMessage("El mensaje no puede exceder 1000 caracteres");
         }
     }
 }

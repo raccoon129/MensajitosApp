@@ -1,3 +1,4 @@
+using MensajeriaWebAPI.Hubs;
 
 namespace MensajeriaWebAPI
 {
@@ -14,6 +15,21 @@ namespace MensajeriaWebAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            // Configurar CORS para permitir la comunicación desde la app MAUI
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", policy =>
+                {
+                    policy.AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .SetIsOriginAllowed(_ => true)
+                          .AllowCredentials();
+                });
+            });
+
+            // Agregar SignalR
+            builder.Services.AddSignalR();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -23,10 +39,13 @@ namespace MensajeriaWebAPI
                 app.UseSwaggerUI();
             }
 
+            app.UseHttpsRedirection();
+            app.UseCors("AllowAll");
             app.UseAuthorization();
 
-
             app.MapControllers();
+            // Mapear el hub de SignalR
+            app.MapHub<ChatHub>("/chathub");
 
             app.Run();
         }

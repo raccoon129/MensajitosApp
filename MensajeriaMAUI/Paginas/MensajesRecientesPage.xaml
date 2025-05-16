@@ -2,11 +2,99 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MensajeriaMAUI.Paginas.MensajesRecientesPage"
-             Title="MensajesRecientesPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Chats Recientes">
+    <Grid RowDefinitions="Auto,*"
+          Padding="10">
+        <!-- Encabezado -->
+
+        <!-- Lista de mensajes recientes -->
+        <RefreshView Grid.Row="1"
+                     x:Name="RefreshView"
+                     Command="{Binding RefreshCommand}"
+                     IsRefreshing="{Binding IsRefreshing}">
+            <CollectionView x:Name="ConversacionesCollection"
+                            ItemsSource="{Binding Conversaciones}"
+                            SelectionMode="Single"
+                            SelectionChanged="OnConversacionSelected"
+                            EmptyView="No hay conversaciones recientes">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Margin="5"
+                               Padding="10"
+                               CornerRadius="10"
+                               BorderColor="#EEEEEE">
+                            <Grid ColumnDefinitions="Auto,*,Auto"
+                                  RowDefinitions="Auto,Auto"
+                                  Padding="5">
+                                <!-- Imagen de perfil (placeholder) -->
+                                <Frame Grid.RowSpan="2"
+                                       WidthRequest="50"
+                                       HeightRequest="50"
+                                       CornerRadius="25"
+                                       IsClippedToBounds="True"
+                                       Padding="0"
+                                       BorderColor="{StaticResource Primary}">
+                                    <Label Text="{Binding NombreUsuario, Converter={StaticResource InitialsConverter}}"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center"
+                                           FontAttributes="Bold"
+                                           TextColor="{StaticResource Primary}" />
+                                </Frame>
+                                <!-- Nombre del usuario -->
+                                <Label Grid.Column="1"
+                                       Grid.Row="0"
+                                       Text="{Binding NombreUsuario}"
+                                       FontAttributes="Bold"
+                                       Margin="10,0,0,0" />
+                                <!-- Último mensaje -->
+                                <Label Grid.Column="1"
+                                       Grid.Row="1"
+                                       Text="{Binding UltimoMensaje}"
+                                       LineBreakMode="TailTruncation"
+                                       MaxLines="1"
+                                       TextColor="Gray"
+                                       Margin="10,0,0,0" />
+                                <!-- Tiempo del último mensaje -->
+                                <Label Grid.Column="2"
+                                       Grid.Row="0"
+                                       Text="{Binding TiempoUltimoMensaje}"
+                                       FontSize="Small"
+                                       TextColor="Gray"
+                                       HorizontalOptions="End" />
+                                <!-- Contador de mensajes no leídos (si es necesario) -->
+                                <Frame Grid.Column="2"
+                                       Grid.Row="1"
+                                       BackgroundColor="{StaticResource Primary}"
+                                       CornerRadius="12"
+                                       HeightRequest="24"
+                                       WidthRequest="24"
+                                       Padding="0"
+                                       IsVisible="{Binding TieneMensajesNoLeidos}"
+                                       HorizontalOptions="End">
+                                    <Label Text="{Binding MensajesNoLeidos}"
+                                           TextColor="White"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center"
+                                           FontSize="Small" />
+                                </Frame>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+        <!-- FAB para iniciar nueva conversación -->
+        <Button Grid.Row="1"
+                Text="+"
+                FontSize="24"
+                WidthRequest="60"
+                HeightRequest="60"
+                CornerRadius="30"
+                BackgroundColor="{StaticResource Primary}"
+                TextColor="White"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Margin="0,0,20,20"
+                Clicked="OnNuevoMensajeClicked" />
+    </Grid>
 </ContentPage>

@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace MensajeriaMAUI.Modelos
 {
-    public class LoginModelo
+    public class UsuarioModelo
     {
+        public int Id { get; set; }
         public string NombreUsuario { get; set; }
-        public string Contrasena { get; set; }
+        public bool IsOnLine { get; set; } //Para saber si está conectado
     }
 }
