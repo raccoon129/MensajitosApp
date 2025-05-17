@@ -10,6 +10,8 @@ namespace MensajeriaWebAPI
         public static string CadenaDeConexion = @"Server=mysql-drift3.alwaysdata.net;Database=drift3_mensajitos;Uid=drift3;Pwd=xhjMz7BuB6PwRpy;";
         public static TipoDB TipoDB = TipoDB.MySQL;
 #else
+        public static string CadenaDeConexion = @"Server=mysql-drift3.alwaysdata.net;Database=drift3_mensajitos;Uid=drift3;Pwd=xhjMz7BuB6PwRpy;";
+        public static TipoDB TipoDB = TipoDB.MySQL;
 
 #endif
         public static FabricRepository FabricaRepository = new FabricRepository(CadenaDeConexion, TipoDB);

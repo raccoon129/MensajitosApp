@@ -13,7 +13,7 @@ namespace COMMON
 #if DEBUG
         public static string UrlAPI = @"http://localhost:5253/";
 #else
-        public static string UrlAPI = @"https://drift3.mensajitos.com/";
+        public static string UrlAPI = @"http://mensajitos.runasp.net/";
 #endif
     }
 }
