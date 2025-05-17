@@ -8,6 +8,8 @@
             // Registrar rutas para navegación
             Routing.RegisterRoute(nameof(Paginas.MensajesRecientesPage), typeof(Paginas.MensajesRecientesPage));
             Routing.RegisterRoute(nameof(Paginas.RegistroPage), typeof(Paginas.RegistroPage));
+
+            Routing.RegisterRoute(nameof(Paginas.ChatPage), typeof(Paginas.ChatPage));
         }
     }
 }

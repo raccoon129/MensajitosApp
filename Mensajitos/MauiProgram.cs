@@ -22,6 +22,9 @@ namespace Mensajitos
             builder.Services.AddTransient<MensajesRecientesPage>();
             builder.Services.AddTransient<RegistroPage>();
 
+            // Añadir
+            builder.Services.AddTransient<Paginas.ChatPage>();
+
             // Registrar servicios
             builder.Services.AddSingleton<ServicioSignalR>();
             builder.Services.AddSingleton<ServicioAPI>();

@@ -82,5 +82,26 @@ namespace Mensajitos.Servicios
                 return new List<Usuario>();
             }
         }
+
+        // Añadir este método a la clase ServicioAPI
+        public async Task<Mensaje> GuardarMensaje(Mensaje mensaje)
+        {
+            try
+            {
+                var respuesta = await _cliente.PostAsJsonAsync("api/Mensaje", mensaje);
+
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    return await respuesta.Content.ReadFromJsonAsync<Mensaje>();
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al guardar mensaje: {ex.Message}");
+                return null;
+            }
+        }
     }
 }

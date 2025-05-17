@@ -90,9 +90,16 @@ public partial class MensajesRecientesPage : ContentPage
     {
         if (e.CurrentSelection.FirstOrDefault() is ChatReciente chatSeleccionado)
         {
-            // Aquí se navegaría a la pantalla de chat con el usuario seleccionado
-            // Por simplicidad, solo mostramos un mensaje
-            await DisplayAlert("Chat", $"Abriendo chat con {chatSeleccionado.NombreUsuario}", "Aceptar");
+            // Navegar a la página de chat con el usuario seleccionado
+            var parametros = new Dictionary<string, object>
+        {
+            { "usuarioId", chatSeleccionado.IdUsuario },
+            { "nombreUsuario", chatSeleccionado.NombreUsuario }
+        };
+
+            await Shell.Current.GoToAsync(nameof(ChatPage), parametros);
+
+            // Limpiar selección
             listaChats.SelectedItem = null;
         }
     }

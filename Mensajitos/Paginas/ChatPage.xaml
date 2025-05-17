@@ -2,11 +2,57 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mensajitos.Paginas.ChatPage"
-             Title="ChatPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="{Binding TituloPagina}">
+    <Grid RowDefinitions="*, Auto">
+        <!-- Lista de mensajes -->
+        <CollectionView x:Name="listaMensajes"
+                        Grid.Row="0"
+                        ItemsSource="{Binding Mensajes}"
+                        Margin="10"
+                        SelectionMode="None">
+            <CollectionView.EmptyView>
+                <VerticalStackLayout VerticalOptions="Center"
+                                     HorizontalOptions="Center">
+                    <Label Text="No hay mensajes. ¡Envía el primero!"
+                           HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10,5">
+                        <Frame BackgroundColor="{Binding ColorFondo}"
+                               Padding="10"
+                               CornerRadius="10"
+                               HorizontalOptions="{Binding Alineacion}">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Contenido}"
+                                       TextColor="White"
+                                       FontSize="16" />
+                                <Label Text="{Binding FechaHora, StringFormat='{0:dd/MM/yyyy HH:mm}'}"
+                                       FontSize="12"
+                                       TextColor="LightGray"
+                                       HorizontalOptions="End" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <!-- Área para enviar mensajes -->
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*, Auto"
+              Padding="10"
+              BackgroundColor="#f0f0f0">
+            <Entry x:Name="txtMensaje"
+                   Placeholder="Escribe un mensaje..."
+                   Grid.Column="0"
+                   Margin="0,0,5,0" />
+            <Button Text="Enviar"
+                    Grid.Column="1"
+                    Clicked="BtnEnviar_Clicked"
+                    BackgroundColor="#512BD4"
+                    TextColor="White"
+                    CornerRadius="20" />
+        </Grid>
+    </Grid>
 </ContentPage>
