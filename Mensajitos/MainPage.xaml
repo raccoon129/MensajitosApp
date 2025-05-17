@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Mensajitos.MainPage"
+             Title="Mensajitos - Inicio de Sesión">
+
+    <VerticalStackLayout
+        Spacing="25"
+        Padding="30"
+        VerticalOptions="Center">
+
+        <Image
+            Source="dotnet_bot.png"
+            HeightRequest="150"
+            Aspect="AspectFit"
+            HorizontalOptions="Center" />
+
+        <Label
+            Text="Mensajitos"
+            Style="{StaticResource Headline}"
+            HorizontalOptions="Center" />
+
+        <Label
+            Text="Inicia sesión para comenzar a chatear"
+            HorizontalOptions="Center" />
+
+        <Frame Padding="15" CornerRadius="10">
+            <VerticalStackLayout Spacing="15">
+                <Entry x:Name="txtUsuario" 
+                       Placeholder="Nombre de usuario" />
+                
+                <Entry x:Name="txtContrasena" 
+                       Placeholder="Contraseña" 
+                       IsPassword="True" />
+                
+                <Button x:Name="btnIniciarSesion" 
+                        Text="Iniciar Sesión" 
+                        Clicked="BtnIniciarSesion_Clicked"
+                        HorizontalOptions="Fill" />
+                
+                <Label
+                    Text="¿No tienes cuenta? Regístrate"
+                    TextDecorations="Underline"
+                    HorizontalOptions="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="IrARegistro_Tapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </VerticalStackLayout>
+        </Frame>
+    </VerticalStackLayout>
+</ContentPage>

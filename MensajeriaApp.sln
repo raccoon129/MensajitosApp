@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MensajeriaWebAPI", "MensajeriaWebAPI\MensajeriaWebAPI.csproj", "{D78E2D72-5DCC-443C-BF82-DFA6BCF625C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MensajeriaMAUI", "MensajeriaMAUI\MensajeriaMAUI.csproj", "{EC26B181-8890-4A03-BDEB-618B11575DEF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mensajitos", "Mensajitos\Mensajitos.csproj", "{2E85F19E-F84F-4475-876B-8D0A157CF6F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,12 +35,12 @@ Global
 		{D78E2D72-5DCC-443C-BF82-DFA6BCF625C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D78E2D72-5DCC-443C-BF82-DFA6BCF625C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D78E2D72-5DCC-443C-BF82-DFA6BCF625C8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EC26B181-8890-4A03-BDEB-618B11575DEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC26B181-8890-4A03-BDEB-618B11575DEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC26B181-8890-4A03-BDEB-618B11575DEF}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{EC26B181-8890-4A03-BDEB-618B11575DEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC26B181-8890-4A03-BDEB-618B11575DEF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EC26B181-8890-4A03-BDEB-618B11575DEF}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{2E85F19E-F84F-4475-876B-8D0A157CF6F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E85F19E-F84F-4475-876B-8D0A157CF6F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E85F19E-F84F-4475-876B-8D0A157CF6F6}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{2E85F19E-F84F-4475-876B-8D0A157CF6F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E85F19E-F84F-4475-876B-8D0A157CF6F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E85F19E-F84F-4475-876B-8D0A157CF6F6}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

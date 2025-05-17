@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Mensajitos.Paginas.MensajesRecientesPage"
+             Title="Mensajes Recientes">
+    
+    <Grid RowDefinitions="Auto,*">
+        <HorizontalStackLayout Padding="10" Spacing="10">
+            <Label Text="Chats" 
+                   FontSize="24" 
+                   VerticalOptions="Center"
+                   HorizontalOptions="StartAndExpand"/>
+            
+            <Button Text="Cerrar Sesión" 
+                    Clicked="BtnCerrarSesion_Clicked"
+                    CornerRadius="20"
+                    HorizontalOptions="End"/>
+        </HorizontalStackLayout>
+        
+        <CollectionView x:Name="listaChats" 
+                        Grid.Row="1"
+                        SelectionMode="Single"
+                        SelectionChanged="ListaChats_SelectionChanged">
+            <CollectionView.EmptyView>
+                <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                    <Label Text="No tienes mensajes recientes" 
+                           HorizontalOptions="Center"/>
+                    <Button Text="Iniciar nuevo chat"
+                            Clicked="BtnNuevoChat_Clicked"
+                            Margin="0,10,0,0"/>
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+            
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Margin="10,5" Padding="10" CornerRadius="10">
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <Ellipse Fill="Gray" 
+                                     WidthRequest="40" 
+                                     HeightRequest="40"
+                                     VerticalOptions="Center"/>
+                            
+                            <VerticalStackLayout Grid.Column="1" Margin="10,0,0,0">
+                                <Label Text="{Binding NombreUsuario}" 
+                                       FontAttributes="Bold"/>
+                                <Label Text="{Binding UltimoMensaje}" 
+                                       MaxLines="1"
+                                       LineBreakMode="TailTruncation"/>
+                            </VerticalStackLayout>
+                            
+                            <Label Grid.Column="2"
+                                   Text="{Binding FechaUltimoMensaje, StringFormat='{0:dd/MM HH:mm}'}"
+                                   FontSize="Small"
+                                   VerticalOptions="Start"/>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>
