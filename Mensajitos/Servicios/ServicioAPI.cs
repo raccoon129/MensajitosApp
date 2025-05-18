@@ -42,18 +42,21 @@ namespace Mensajitos.Servicios
                 return null;
             }
         }
-        
+
         public async Task<List<Mensaje>> ObtenerMensajes(int idUsuario)
         {
             try
             {
-                var respuesta = await _cliente.GetAsync($"api/Mensaje?id={idUsuario}");
-                
+                // Usar el  endpoint específico para mensajes de un usuario
+                var respuesta = await _cliente.GetAsync($"api/Mensaje/usuario/{idUsuario}");
+
                 if (respuesta.IsSuccessStatusCode)
                 {
                     return await respuesta.Content.ReadFromJsonAsync<List<Mensaje>>() ?? new List<Mensaje>();
                 }
-                
+
+                string error = await respuesta.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error al obtener mensajes: {error}");
                 return new List<Mensaje>();
             }
             catch (Exception ex)
@@ -62,18 +65,52 @@ namespace Mensajitos.Servicios
                 return new List<Mensaje>();
             }
         }
-        
+
+        // Método  para obtener conversaciones específicas entre dos usuarios
+        public async Task<List<Mensaje>> ObtenerConversacion(int usuario1, int usuario2)
+        {
+            try
+            {
+                // Debug
+                Console.WriteLine($"API: Obteniendo conversación {usuario1}-{usuario2}");
+
+                // Construir URL sencilla
+                string url = $"api/Mensaje/conversacion?usuario1={usuario1}&usuario2={usuario2}";
+
+                // Realizar solicitud HTTP simple
+                var respuesta = await _cliente.GetAsync(url);
+                Console.WriteLine($"API: Estado respuesta: {respuesta.StatusCode}");
+
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    var mensajes = await respuesta.Content.ReadFromJsonAsync<List<Mensaje>>();
+                    Console.WriteLine($"API: Recibidos {mensajes?.Count ?? 0} mensajes");
+                    return mensajes ?? new List<Mensaje>();
+                }
+                else
+                {
+                    var error = await respuesta.Content.ReadAsStringAsync();
+                    Console.WriteLine($"API: Error HTTP {respuesta.StatusCode}: {error}");
+                    return new List<Mensaje>();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"API: Excepción: {ex.Message}");
+                return new List<Mensaje>();
+            }
+        }
         public async Task<List<Usuario>> ObtenerUsuarios()
         {
             try
             {
                 var respuesta = await _cliente.GetAsync("api/Usuario");
-                
+
                 if (respuesta.IsSuccessStatusCode)
                 {
                     return await respuesta.Content.ReadFromJsonAsync<List<Usuario>>() ?? new List<Usuario>();
                 }
-                
+
                 return new List<Usuario>();
             }
             catch (Exception ex)
@@ -82,7 +119,6 @@ namespace Mensajitos.Servicios
                 return new List<Usuario>();
             }
         }
-
         // Añadir este método a la clase ServicioAPI
         public async Task<Mensaje> GuardarMensaje(Mensaje mensaje)
         {

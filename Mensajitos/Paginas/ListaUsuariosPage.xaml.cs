@@ -2,6 +2,10 @@ using COMMON.Entidades;
 using Mensajitos.Servicios;
 using System.Windows.Input;
 
+using COMMON.Entidades;
+using Mensajitos.Servicios;
+using System.Windows.Input;
+
 namespace Mensajitos.Paginas
 {
     public partial class ListaUsuariosPage : ContentPage
@@ -71,10 +75,9 @@ namespace Mensajitos.Paginas
         {
             if (e.CurrentSelection.FirstOrDefault() is Usuario usuarioSeleccionado)
             {
-                // Desactivar la selección para evitar problemas visuales
+                // Desactivar la selección
                 listaUsuarios.SelectedItem = null;
 
-                // Preguntar si desea iniciar chat
                 bool iniciarChat = await DisplayAlert("Nuevo chat",
                     $"¿Deseas iniciar una conversación con {usuarioSeleccionado.nombre_usuario}?",
                     "Sí", "No");
@@ -83,7 +86,6 @@ namespace Mensajitos.Paginas
                 {
                     try
                     {
-                        // Verificar si el servicio SignalR está disponible
                         var servicioSignalR = Application.Current.Handler.MauiContext.Services.GetService<ServicioSignalR>();
                         if (servicioSignalR == null)
                         {
@@ -91,14 +93,13 @@ namespace Mensajitos.Paginas
                             return;
                         }
 
-                        // Crear una instancia de ChatPage y establecer propiedades
+                        // CORREGIDO: Usar propiedades correctas que coincidan con ChatPage
                         var chatPage = new ChatPage(_servicioAPI, servicioSignalR)
                         {
-                            UsuarioDestinoId = usuarioSeleccionado.id_usuario,
-                            NombreUsuarioDestino = usuarioSeleccionado.nombre_usuario ?? "Usuario"
+                            UsuarioDestinatarioId = usuarioSeleccionado.id_usuario,
+                            NombreUsuarioDestinatario = usuarioSeleccionado.nombre_usuario ?? "Usuario"
                         };
 
-                        // Navegar a la página de chat usando NavigationPage
                         await Navigation.PushAsync(chatPage);
                     }
                     catch (Exception ex)

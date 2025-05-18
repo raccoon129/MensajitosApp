@@ -4,19 +4,29 @@
              x:Class="Mensajitos.Paginas.MensajesRecientesPage"
              Title="Mensajes Recientes">
     <Grid RowDefinitions="Auto,*">
-        <Grid ColumnDefinitions="*,Auto,Auto">
+        <Grid ColumnDefinitions="*,Auto,Auto,Auto">
             <Label Text="Chats"
                    FontSize="24"
                    VerticalOptions="Center"
                    Margin="10,0,0,0"
                    Grid.Column="0" />
+            
+            <!-- Añadido: Indicador de actividad para mostrar actualizaciones -->
+            <ActivityIndicator x:Name="activityRefresh" 
+                              IsRunning="{Binding IsRefreshing}"
+                              IsVisible="{Binding IsRefreshing}"
+                              Grid.Column="1"
+                              HeightRequest="25"
+                              WidthRequest="25"
+                              Margin="0,0,10,0" />
+                              
             <Button Text="Perfil"
-                    Grid.Column="1"
+                    Grid.Column="2"
                     Clicked="BtnPerfil_Clicked"
                     Margin="0,0,10,0"
                     CornerRadius="20" />
             <Button Text="Salir"
-                    Grid.Column="2"
+                    Grid.Column="3"
                     Clicked="BtnCerrarSesion_Clicked"
                     BackgroundColor="#e74c3c"
                     Margin="0,0,10,0"

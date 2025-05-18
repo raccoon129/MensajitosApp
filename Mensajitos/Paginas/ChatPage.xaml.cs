@@ -6,51 +6,25 @@ using System.Runtime.CompilerServices;
 
 namespace Mensajitos.Paginas
 {
-    [QueryProperty(nameof(UsuarioDestinatarioId), "usuarioId")]
-    [QueryProperty(nameof(NombreUsuarioDestinatario), "nombreUsuario")]
     public partial class ChatPage : ContentPage, INotifyPropertyChanged
     {
         private readonly ServicioAPI _servicioAPI;
         private readonly ServicioSignalR _servicioSignalR;
-
-
-        // Propiedades para el enlace de datos
-        private string _tituloPagina;
+        private int _usuarioActualId;
         private int _usuarioDestinatarioId;
         private string _nombreUsuarioDestinatario;
-        private int _usuarioActualId;
 
-        public int UsuarioDestinoId { get; set; }
-        public string NombreUsuarioDestino { get; set; }
+        // Colección para mensajes
+        public ObservableCollection<MensajeUI> Mensajes { get; } = new ObservableCollection<MensajeUI>();
 
-
-
-        // Colección observable para los mensajes
-        public ObservableCollection<MensajeUI> Mensajes { get; set; } = new ObservableCollection<MensajeUI>();
-
-        public string TituloPagina
-        {
-            get => _tituloPagina;
-            set
-            {
-                if (_tituloPagina != value)
-                {
-                    _tituloPagina = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
+        // Propiedades básicas
         public int UsuarioDestinatarioId
         {
             get => _usuarioDestinatarioId;
             set
             {
-                if (_usuarioDestinatarioId != value)
-                {
-                    _usuarioDestinatarioId = value;
-                    OnPropertyChanged();
-                }
+                _usuarioDestinatarioId = value;
+                OnPropertyChanged();
             }
         }
 
@@ -59,12 +33,9 @@ namespace Mensajitos.Paginas
             get => _nombreUsuarioDestinatario;
             set
             {
-                if (_nombreUsuarioDestinatario != value)
-                {
-                    _nombreUsuarioDestinatario = value;
-                    TituloPagina = value; // Actualizar título de la página
-                    OnPropertyChanged();
-                }
+                _nombreUsuarioDestinatario = value;
+                Title = value;
+                OnPropertyChanged();
             }
         }
 
@@ -73,11 +44,9 @@ namespace Mensajitos.Paginas
             InitializeComponent();
             _servicioAPI = servicioAPI;
             _servicioSignalR = servicioSignalR;
-
-            // Configurar contexto de datos para el binding
             BindingContext = this;
 
-            // Suscribirse a eventos de SignalR
+            // Suscribirse a evento de mensajes
             _servicioSignalR.MensajeRecibido += OnMensajeRecibido;
         }
 
@@ -85,67 +54,51 @@ namespace Mensajitos.Paginas
         {
             base.OnAppearing();
 
-            // Obtener ID del usuario actual
+            // Obtener ID del usuario conectado
             if (!int.TryParse(COMMON.Params.UsuarioConectado, out _usuarioActualId))
             {
-                await DisplayAlert("Error", "No hay usuario conectado", "Aceptar");
-                await Shell.Current.GoToAsync("//MainPage");
+                await Navigation.PopAsync();
                 return;
             }
 
-            // Cargar mensajes históricos
-            await CargarMensajesHistoricos();
+            // Cargar mensajes
+            await CargarMensajes();
         }
 
-        protected override void OnDisappearing()
-        {
-            base.OnDisappearing();
-            // Desuscribirse de los eventos al salir de la página
-            _servicioSignalR.MensajeRecibido -= OnMensajeRecibido;
-        }
-
-        private async Task CargarMensajesHistoricos()
+        private async Task CargarMensajes()
         {
             try
             {
-                // Obtener todos los mensajes del usuario actual
-                var todosMensajes = await _servicioAPI.ObtenerMensajes(_usuarioActualId);
+                // Obtener mensajes directamente
+                var mensajes = await _servicioAPI.ObtenerConversacion(_usuarioActualId, UsuarioDestinatarioId);
 
-                // Filtrar solo los mensajes entre el usuario actual y el destinatario
-                var mensajesFiltrados = todosMensajes.Where(m =>
-                    (m.emisor_id == _usuarioActualId && m.receptor_id == UsuarioDestinatarioId) ||
-                    (m.emisor_id == UsuarioDestinatarioId && m.receptor_id == _usuarioActualId))
-                    .OrderBy(m => m.fecha_ejec)
-                    .ToList();
-
-                // Limpiar la colección actual
+                // Limpiar y mostrar
                 Mensajes.Clear();
 
-                // Añadir los mensajes a la colección
-                foreach (var mensaje in mensajesFiltrados)
+                foreach (var msg in mensajes)
                 {
-                    var esPropio = mensaje.emisor_id == _usuarioActualId;
+                    bool esPropio = msg.emisor_id == _usuarioActualId;
                     Mensajes.Add(new MensajeUI
                     {
-                        Id = mensaje.id_mensaje,
-                        Contenido = mensaje.contenido,
-                        FechaHora = mensaje.fecha_ejec,
+                        Id = msg.id_mensaje,
+                        Contenido = msg.contenido ?? "",
+                        FechaHora = msg.fecha_ejec,
                         EsPropio = esPropio,
                         Alineacion = esPropio ? LayoutOptions.End : LayoutOptions.Start,
                         ColorFondo = esPropio ? Colors.DodgerBlue : Colors.Gray
                     });
                 }
 
-                // Desplazarse al último mensaje
+                // Scroll al último mensaje
                 if (Mensajes.Count > 0)
                 {
-                    await Task.Delay(100); // Pequeña espera para asegurar que la UI se actualice
+                    await Task.Delay(100);
                     listaMensajes.ScrollTo(Mensajes.Last(), animate: false);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                await DisplayAlert("Error", $"No se pudieron cargar los mensajes: {ex.Message}", "Aceptar");
+                await DisplayAlert("Error", "No se pudieron cargar los mensajes", "Aceptar");
             }
         }
 
@@ -156,8 +109,10 @@ namespace Mensajitos.Paginas
 
             try
             {
-                // Crear nuevo mensaje
-                var nuevoMensaje = new Mensaje
+                btnEnviar.IsEnabled = false;
+
+                // Crear y guardar mensaje
+                var mensaje = new Mensaje
                 {
                     emisor_id = _usuarioActualId,
                     receptor_id = UsuarioDestinatarioId,
@@ -165,76 +120,74 @@ namespace Mensajitos.Paginas
                     fecha_ejec = DateTime.Now
                 };
 
-                // Enviar mensaje a través de SignalR
-                await _servicioSignalR.EnviarMensaje(nuevoMensaje);
-
-                // Guardar mensaje en la base de datos a través de la API
-                await _servicioAPI.GuardarMensaje(nuevoMensaje);
-
-                // Añadir mensaje a la UI
-                Mensajes.Add(new MensajeUI
+                var guardado = await _servicioAPI.GuardarMensaje(mensaje);
+                if (guardado != null)
                 {
-                    Id = nuevoMensaje.id_mensaje,
-                    Contenido = nuevoMensaje.contenido,
-                    FechaHora = nuevoMensaje.fecha_ejec,
-                    EsPropio = true,
-                    Alineacion = LayoutOptions.End,
-                    ColorFondo = Colors.DodgerBlue
-                });
+                    // Enviar por SignalR
+                    await _servicioSignalR.EnviarMensaje(guardado);
 
-                // Limpiar campo de texto
-                txtMensaje.Text = string.Empty;
+                    // Añadir a la UI
+                    Mensajes.Add(new MensajeUI
+                    {
+                        Id = guardado.id_mensaje,
+                        Contenido = guardado.contenido,
+                        FechaHora = guardado.fecha_ejec,
+                        EsPropio = true,
+                        Alineacion = LayoutOptions.End,
+                        ColorFondo = Colors.DodgerBlue
+                    });
 
-                // Desplazarse al último mensaje
-                await Task.Delay(100);
-                listaMensajes.ScrollTo(Mensajes.Last(), animate: true);
+                    // Limpiar y hacer scroll
+                    txtMensaje.Text = string.Empty;
+                    listaMensajes.ScrollTo(Mensajes.Last(), animate: true);
+                }
             }
-            catch (Exception ex)
+            finally
             {
-                await DisplayAlert("Error", $"No se pudo enviar el mensaje: {ex.Message}", "Aceptar");
+                btnEnviar.IsEnabled = true;
             }
         }
 
         private void OnMensajeRecibido(Mensaje mensaje)
         {
-            // Verificar que el mensaje es parte de esta conversación
+            // Verificar si el mensaje pertenece a esta conversación
             if ((mensaje.emisor_id == _usuarioActualId && mensaje.receptor_id == UsuarioDestinatarioId) ||
                 (mensaje.emisor_id == UsuarioDestinatarioId && mensaje.receptor_id == _usuarioActualId))
             {
-                MainThread.BeginInvokeOnMainThread(() =>
-                {
-                    var esPropio = mensaje.emisor_id == _usuarioActualId;
-
-                    // Evitar duplicados (si el mensaje ya está en la lista)
+                MainThread.BeginInvokeOnMainThread(() => {
+                    // Evitar duplicados
                     if (!Mensajes.Any(m => m.Id == mensaje.id_mensaje))
                     {
+                        // Añadir a la UI
                         Mensajes.Add(new MensajeUI
                         {
                             Id = mensaje.id_mensaje,
                             Contenido = mensaje.contenido,
                             FechaHora = mensaje.fecha_ejec,
-                            EsPropio = esPropio,
-                            Alineacion = esPropio ? LayoutOptions.End : LayoutOptions.Start,
-                            ColorFondo = esPropio ? Colors.DodgerBlue : Colors.Gray
+                            EsPropio = mensaje.emisor_id == _usuarioActualId,
+                            Alineacion = mensaje.emisor_id == _usuarioActualId ? LayoutOptions.End : LayoutOptions.Start,
+                            ColorFondo = mensaje.emisor_id == _usuarioActualId ? Colors.DodgerBlue : Colors.Gray
                         });
 
-                        // Desplazarse al último mensaje
+                        // Hacer scroll
                         listaMensajes.ScrollTo(Mensajes.Last(), animate: true);
                     }
                 });
             }
         }
 
-        // Implementación de INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        protected override void OnDisappearing()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            _servicioSignalR.MensajeRecibido -= OnMensajeRecibido;
+            base.OnDisappearing();
         }
+
+        // INotifyPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string name = null) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 
-    // Clase para representar un mensaje en la UI
     public class MensajeUI
     {
         public int Id { get; set; }

@@ -23,20 +23,70 @@ public partial class MensajesRecientesPage : ContentPage
         listaChats.ItemsSource = _chatsRecientes;
     }
 
+    private bool _primeraVez = true;
+    private CancellationTokenSource _cts;
+
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        
+
+        // Iniciar el token de cancelación para refrescos automáticos
+        _cts = new CancellationTokenSource();
+
         // Obtener el ID del usuario actual
         if (int.TryParse(COMMON.Params.UsuarioConectado, out int idUsuario))
         {
             _idUsuarioActual = idUsuario;
+
+            // Cargar mensajes inmediatamente
             await CargarMensajesRecientes();
+
+            // Si es la primera vez que aparece la página, iniciar refrescos automáticos
+            if (_primeraVez)
+            {
+                _primeraVez = false;
+                _ = IniciarRefrescoAutomatico(_cts.Token);
+            }
         }
         else
         {
             await DisplayAlert("Error", "No hay usuario conectado", "Aceptar");
             await Shell.Current.GoToAsync("//MainPage");
+        }
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+
+        // Cancelar refrescos automáticos al salir de la página
+        _cts?.Cancel();
+        _cts?.Dispose();
+        _cts = null;
+    }
+
+    private async Task IniciarRefrescoAutomatico(CancellationToken token)
+    {
+        try
+        {
+            // Refrescar cada 30 segundos
+            while (!token.IsCancellationRequested)
+            {
+                await Task.Delay(30000, token); // 30 segundos
+
+                if (!token.IsCancellationRequested)
+                {
+                    await CargarMensajesRecientes();
+                }
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // Normal al cancelar, no hacer nada
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error en refresco automático: {ex.Message}");
         }
     }
 
@@ -90,20 +140,31 @@ public partial class MensajesRecientesPage : ContentPage
     {
         if (e.CurrentSelection.FirstOrDefault() is ChatReciente chatSeleccionado)
         {
-            // Crear la página de chat con los parámetros necesarios
-            var chatPage = new ChatPage(_servicioAPI, _servicioSignalR)
+            try
             {
-                UsuarioDestinatarioId = chatSeleccionado.IdUsuario,
-                NombreUsuarioDestinatario = chatSeleccionado.NombreUsuario
-            };
+                // Debug
+                Console.WriteLine($"Navegando a chat con: {chatSeleccionado.IdUsuario} - {chatSeleccionado.NombreUsuario}");
 
-            await Navigation.PushAsync(chatPage);
+                // Crear y configurar página con valores explícitos
+                var chatPage = new ChatPage(_servicioAPI, _servicioSignalR)
+                {
+                    UsuarioDestinatarioId = chatSeleccionado.IdUsuario,
+                    NombreUsuarioDestinatario = chatSeleccionado.NombreUsuario
+                };
 
-            // Limpiar selección
-            listaChats.SelectedItem = null;
+                await Navigation.PushAsync(chatPage);
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", "No se pudo abrir el chat", "Aceptar");
+                Console.WriteLine($"Error navegación: {ex.Message}");
+            }
+            finally
+            {
+                listaChats.SelectedItem = null;
+            }
         }
     }
-
 
     private async void BtnCerrarSesion_Clicked(object sender, EventArgs e)
     {
@@ -122,7 +183,6 @@ public partial class MensajesRecientesPage : ContentPage
         public string UltimoMensaje { get; set; }
         public DateTime FechaUltimoMensaje { get; set; }
     }
-
 
     private async void BtnPerfil_Clicked(object sender, EventArgs e)
     {
@@ -149,6 +209,4 @@ public partial class MensajesRecientesPage : ContentPage
             await DisplayAlert("Error", $"No se pudo navegar a la lista de usuarios: {ex.Message}", "Aceptar");
         }
     }
-
-
 }

@@ -24,16 +24,33 @@ namespace MensajeriaWebAPI.Hubs
         }
 
         // Método para enviar un mensaje a un usuario específico
+        // Método para enviar un mensaje a un usuario específico
         public async Task EnviarMensaje(Mensaje mensaje)
         {
-            // Si el receptor está online, le enviamos el mensaje directamente
-            if (_usuariosConectados.TryGetValue(mensaje.receptor_id, out string connectionId))
+            try
             {
-                await Clients.Client(connectionId).SendAsync("RecibirMensaje", mensaje);
-            }
+                // Registrar diagnóstico
+                Console.WriteLine($"Enviando mensaje de {mensaje.emisor_id} a {mensaje.receptor_id}: {mensaje.contenido}");
 
-            // También notificamos al remitente que el mensaje fue enviado
-            await Clients.Caller.SendAsync("MensajeEnviado", mensaje);
+                // Si el receptor está online, le enviamos el mensaje directamente
+                if (_usuariosConectados.TryGetValue(mensaje.receptor_id, out string connectionId))
+                {
+                    Console.WriteLine($"Usuario {mensaje.receptor_id} está conectado, enviando mensaje directamente");
+                    await Clients.Client(connectionId).SendAsync("RecibirMensaje", mensaje);
+                }
+                else
+                {
+                    Console.WriteLine($"Usuario {mensaje.receptor_id} no está conectado, solo notificando al emisor");
+                }
+
+                // También notificamos al remitente que el mensaje fue enviado
+                await Clients.Caller.SendAsync("MensajeEnviado", mensaje);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en EnviarMensaje: {ex.Message}");
+                throw;
+            }
         }
 
         // Método que se llama cuando un usuario se desconecta
