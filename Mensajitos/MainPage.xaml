@@ -37,15 +37,10 @@
                         Text="Iniciar Sesión" 
                         Clicked="BtnIniciarSesion_Clicked"
                         HorizontalOptions="Fill" />
-                
-                <Label
-                    Text="¿No tienes cuenta? Regístrate"
-                    TextDecorations="Underline"
-                    HorizontalOptions="Center">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="IrARegistro_Tapped" />
-                    </Label.GestureRecognizers>
-                </Label>
+                <Button Text="¿No tienes cuenta? Regístrate"
+                        Clicked="OnRegistrarseClicked"
+                        BackgroundColor="Transparent"
+                        TextColor="#4CAF50" />
             </VerticalStackLayout>
         </Frame>
     </VerticalStackLayout>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Mensajitos.Paginas.PrincipalPage"
+             Title="Mensajitos"
+             NavigationPage.HasNavigationBar="False">
+    <Grid RowDefinitions="*, Auto">
+        <!-- Área de contenido principal -->
+        <ContentView x:Name="contentArea"
+                     Grid.Row="0">
+            <!-- Aquí se mostrarán las diferentes vistas -->
+        </ContentView>
+        <!-- Barra de navegación inferior -->
+        <Grid Grid.Row="1"
+              BackgroundColor="#f0f0f0"
+              Padding="5"
+              ColumnSpacing="0"
+              ColumnDefinitions="*,*,*">
+            <!-- Botón Mensajes -->
+            <Button Grid.Column="0"
+                    Text="Mensajes"
+                    Clicked="BtnMensajes_Clicked"
+                    x:Name="btnMensajes"
+                    BackgroundColor="Transparent"
+                    TextColor="#512BD4" />
+            <!-- Botón Contactos -->
+            <Button Grid.Column="1"
+                    Text="Contactos"
+                    Clicked="BtnContactos_Clicked"
+                    x:Name="btnContactos"
+                    BackgroundColor="Transparent"
+                    TextColor="Gray" />
+            <!-- Botón Perfil -->
+            <Button Grid.Column="2"
+                    Text="Perfil"
+                    Clicked="BtnPerfil_Clicked"
+                    x:Name="btnPerfil"
+                    BackgroundColor="Transparent"
+                    TextColor="Gray" />
+        </Grid>
+    </Grid>
+</ContentPage>

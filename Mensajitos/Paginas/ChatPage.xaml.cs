@@ -13,11 +13,17 @@ namespace Mensajitos.Paginas
         private readonly ServicioAPI _servicioAPI;
         private readonly ServicioSignalR _servicioSignalR;
 
+
         // Propiedades para el enlace de datos
         private string _tituloPagina;
         private int _usuarioDestinatarioId;
         private string _nombreUsuarioDestinatario;
         private int _usuarioActualId;
+
+        public int UsuarioDestinoId { get; set; }
+        public string NombreUsuarioDestino { get; set; }
+
+
 
         // Colección observable para los mensajes
         public ObservableCollection<MensajeUI> Mensajes { get; set; } = new ObservableCollection<MensajeUI>();

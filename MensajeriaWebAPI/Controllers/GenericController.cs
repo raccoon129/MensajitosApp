@@ -63,7 +63,6 @@ namespace MensajeriaWebAPI.Controllers
         }
         //insertar
         [HttpPost]
-        [HttpPost]
         public ActionResult<T> Post([FromBody] T datos)
         {
             try

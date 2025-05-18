@@ -16,6 +16,7 @@ namespace Mensajitos
             _servicioSignalR = servicioSignalR;
         }
 
+        // Modificar el método BtnIniciarSesion_Clicked
         private async void BtnIniciarSesion_Clicked(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtUsuario.Text) || string.IsNullOrEmpty(txtContrasena.Text))
@@ -42,7 +43,7 @@ namespace Mensajitos
                     await _servicioSignalR.IniciarConexion(usuario.id_usuario);
 
                     // Navegar a la página de mensajes recientes
-                    await Shell.Current.GoToAsync(nameof(Paginas.MensajesRecientesPage));
+                    await ((AppShell)Shell.Current).IrAMensajesRecientes();
                 }
                 else
                 {
@@ -61,9 +62,9 @@ namespace Mensajitos
             }
         }
 
-        private async void IrARegistro_Tapped(object sender, EventArgs e)
+        private async void OnRegistrarseClicked(object sender, EventArgs e)
         {
-            await Shell.Current.GoToAsync("//Registro");
+            await Shell.Current.GoToAsync("Registro");
         }
     }
 }

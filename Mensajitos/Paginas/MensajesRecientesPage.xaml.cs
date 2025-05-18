@@ -90,33 +90,30 @@ public partial class MensajesRecientesPage : ContentPage
     {
         if (e.CurrentSelection.FirstOrDefault() is ChatReciente chatSeleccionado)
         {
-            // Navegar a la página de chat con el usuario seleccionado
-            var parametros = new Dictionary<string, object>
-        {
-            { "usuarioId", chatSeleccionado.IdUsuario },
-            { "nombreUsuario", chatSeleccionado.NombreUsuario }
-        };
+            // Crear la página de chat con los parámetros necesarios
+            var chatPage = new ChatPage(_servicioAPI, _servicioSignalR)
+            {
+                UsuarioDestinatarioId = chatSeleccionado.IdUsuario,
+                NombreUsuarioDestinatario = chatSeleccionado.NombreUsuario
+            };
 
-            await Shell.Current.GoToAsync(nameof(ChatPage), parametros);
+            await Navigation.PushAsync(chatPage);
 
             // Limpiar selección
             listaChats.SelectedItem = null;
         }
     }
 
-    private async void BtnNuevoChat_Clicked(object sender, EventArgs e)
-    {
-        // Aquí se implementaría la lógica para iniciar un nuevo chat
-        await DisplayAlert("Nuevo Chat", "Próximamente: Lista de usuarios disponibles", "Aceptar");
-    }
 
     private async void BtnCerrarSesion_Clicked(object sender, EventArgs e)
     {
         await _servicioSignalR.Desconectar();
         COMMON.Params.UsuarioConectado = string.Empty;
-        await Shell.Current.GoToAsync("//MainPage");
+
+        // Reiniciar completamente a un nuevo AppShell
+        Application.Current.MainPage = new AppShell();
     }
-    
+
     // Clase para representar un chat reciente
     public class ChatReciente
     {
@@ -125,4 +122,33 @@ public partial class MensajesRecientesPage : ContentPage
         public string UltimoMensaje { get; set; }
         public DateTime FechaUltimoMensaje { get; set; }
     }
+
+
+    private async void BtnPerfil_Clicked(object sender, EventArgs e)
+    {
+        try
+        {
+            var perfilPage = new Catalogos.UsuarioCatalogo(_servicioAPI, _servicioSignalR);
+            await Navigation.PushAsync(perfilPage);
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", $"No se pudo navegar al perfil: {ex.Message}", "Aceptar");
+        }
+    }
+
+    private async void BtnNuevoChat_Clicked(object sender, EventArgs e)
+    {
+        try
+        {
+            var listaUsuariosPage = new Paginas.ListaUsuariosPage(_servicioAPI);
+            await Navigation.PushAsync(listaUsuariosPage);
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", $"No se pudo navegar a la lista de usuarios: {ex.Message}", "Aceptar");
+        }
+    }
+
+
 }

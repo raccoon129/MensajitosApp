@@ -2,11 +2,54 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mensajitos.Paginas.RegistroPage"
-             Title="RegistroPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Registro de Usuario">
+    <Grid Padding="20"
+          RowSpacing="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label Text="Crear una Cuenta Nueva"
+               FontSize="24"
+               HorizontalOptions="Center"
+               Grid.Row="0" />
+        <VerticalStackLayout Grid.Row="1"
+                             Spacing="5">
+            <Label Text="Nombre de Usuario:"
+                   FontAttributes="Bold" />
+            <Entry x:Name="EntryUsuario"
+                   Placeholder="Ingresa tu nombre de usuario" />
+        </VerticalStackLayout>
+        <VerticalStackLayout Grid.Row="2"
+                             Spacing="5">
+            <Label Text="Contraseña:"
+                   FontAttributes="Bold" />
+            <Entry x:Name="EntryContrasena"
+                   IsPassword="True"
+                   Placeholder="Ingresa tu contraseña" />
+        </VerticalStackLayout>
+        <VerticalStackLayout Grid.Row="3"
+                             Spacing="5">
+            <Label Text="Confirmar Contraseña:"
+                   FontAttributes="Bold" />
+            <Entry x:Name="EntryConfirmarContrasena"
+                   IsPassword="True"
+                   Placeholder="Confirma tu contraseña" />
+        </VerticalStackLayout>
+        <Button Text="Registrar Cuenta"
+                Grid.Row="4"
+                Clicked="OnRegistrarClicked"
+                BackgroundColor="#4CAF50"
+                TextColor="White"
+                HorizontalOptions="Center"
+                WidthRequest="200" />
+        <Label x:Name="LabelEstado"
+               Grid.Row="5"
+               HorizontalOptions="Center"
+               TextColor="Red" />
+    </Grid>
 </ContentPage>
